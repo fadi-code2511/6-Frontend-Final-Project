@@ -9,10 +9,10 @@ renderTasks();
 
 function addTask() {
     var taskValue = taskFeild.value;
-    if (taskValue === "") {
+    if (taskValue == "") {
         errorMessage.innerText = "Please enter a task before adding";
     } else {
-        tasks.push({ text: taskValue});
+        tasks.push({ text: taskValue, completed: false });
         saveTasks();
         taskFeild.value = "";
         errorMessage.innerText = "";
@@ -20,22 +20,32 @@ function addTask() {
     }
 }
 
+
 function renderTasks() {
     taskList.innerHTML = "";
 
     for (var i = 0; i < tasks.length; i++) {
         var task = tasks[i];
+        var checkedAttribute = "";
+        var completedClass = "";
+
+        if (task.completed) {
+            checkedAttribute = "checked";       //if the task completed
+            completedClass = "completed";       //if yes add class
+        }
 
         taskList.innerHTML += `
             <div class="list">
-                <input type="checkbox" class="taskComplete ">
-                <label class="felx-wrap">${task.text}</label>
+                <input type="checkbox" class="taskComplete" ${checkedAttribute}>
+                <label class="felx-wrap ${completedClass}">${task.text}</label>
                 <button class="button buttonEdit">Edit</button>
-                <button class="button buttonDelete" ">Delete</button>
+                <button class="button buttonDelete">Delete</button>
             </div>
         `;
     }
 }
+
+
 
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -65,3 +75,21 @@ taskList.addEventListener("click", function(e) {
     }
 });
 
+
+//checked tasks
+taskList.addEventListener("click", function(e){
+    if(e.target.classList.contains("taskComplete")){
+        var taskDiv = e.target.parentElement;
+        var taskText = taskDiv.querySelector("label").innerText;
+
+        for(var i=0; i<tasks.length; i++){
+            if(tasks[i].text == taskText){
+                tasks[i].completed = e.target.checked; // (checked) is a property to check if true or false
+                break;
+            }
+        }
+
+        saveTasks();
+        renderTasks(); 
+    }
+});
