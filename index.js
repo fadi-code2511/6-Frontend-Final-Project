@@ -43,3 +43,25 @@ function saveTasks() {
 
 //adding task
 addTaskButton.addEventListener("click", addTask);
+
+
+// Delete task
+taskList.addEventListener("click", function(e) {
+     
+    if (e.target.classList.contains("buttonDelete")) {
+        var taskDiv = e.target.parentElement; // the element we clicked on
+        var taskText = taskDiv.querySelector("label").innerText; 
+        
+        for (var i = 0; i < tasks.length; i++) {
+            if (tasks[i].text == taskText) { 
+                tasks.splice(i, 1); // at postion i delete one item.
+                break;
+            }
+        }
+        // refresh the local storage.
+        saveTasks();
+        // delete it from the web page.
+        taskDiv.remove();
+    }
+});
+
