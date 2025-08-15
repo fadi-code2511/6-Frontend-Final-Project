@@ -69,3 +69,10 @@
     height: 25px;
     outline-color: rgb(240, 207, 76);   
 }
+
+.felx-wrap{
+    display: inline-block;
+    max-width: 200px;
+    word-break: break-word; /*to break the word */
+
+}
